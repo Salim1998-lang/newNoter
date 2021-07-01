@@ -35,7 +35,7 @@ class ListFragment : Fragment() {
 
         val recyclerView = view.recyclerView
         recyclerView.adapter = adapter
-        recyclerView.layoutManager = GridLayoutManager(requireActivity(), 2)
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
         mToDoViewModel.getAllData.observe(viewLifecycleOwner,){date ->
             mSharedViewModel.checkIfDatabaseEmpty(date)

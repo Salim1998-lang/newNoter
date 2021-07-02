@@ -11,6 +11,7 @@ import androidx.navigation.fragment.navArgs
 import com.example.to_dolist.R
 import com.example.to_dolist.data.models.ToDoData
 import com.example.to_dolist.data.viewmodel.ToDoViewModel
+import com.example.to_dolist.databinding.FragmentUpdateBinding
 import com.example.to_dolist.fragments.SharedViewModel
 import kotlinx.android.synthetic.main.fragment_update.*
 import kotlinx.android.synthetic.main.fragment_update.view.*
@@ -21,18 +22,18 @@ class UpdateFragment : Fragment() {
     private val mShaViewModel: SharedViewModel by viewModels()
     private val mToDoViewModel: ToDoViewModel by viewModels()
 
+    private var _binding: FragmentUpdateBinding? = null
+    private val binding get() = _binding!!
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        val view = inflater.inflate(R.layout.fragment_update, container, false)
-
+    ): View {
+        _binding = FragmentUpdateBinding.inflate(inflater, container, false)
+        binding.args = args
         setHasOptionsMenu(true)
-        view.current_description_et.setText(args.currentItem.description)
-        view.current_priorities_spinner.setSelection(mShaViewModel.parsePriorityToInt(args.currentItem.priority))
-        view.current_title_et.setText(args.currentItem.title)
-        view.current_priorities_spinner.onItemSelectedListener = mShaViewModel.listener
-        return view
+        binding.currentPrioritiesSpinner.onItemSelectedListener = mShaViewModel.listener
+        return binding.root
     }
 
 
@@ -85,5 +86,10 @@ class UpdateFragment : Fragment() {
         } else {
             Toast.makeText(requireContext(), "Please fill out all fields", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }
